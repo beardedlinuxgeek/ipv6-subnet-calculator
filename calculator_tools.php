@@ -1,7 +1,4 @@
 <?php
-require_once 'Network.php'; // Include the Network class
-
-
 /**
  * Convert an IPv6 from human readable format to a hexadecimal array
  * 
@@ -76,13 +73,30 @@ function print_network( $network )
 		print_network($subnet);
 }
 
-// Quick demo, update later
-$human_ip = '2001:9fe:a:80::';
-$prefix = 60;
-$levels = array(3, 4);
 
-$ip = human_to_hex( $human_ip );
-$top_level = new Network($ip, $prefix, $levels, '');
-
-header('Content-Type: text/plain');
-print_network($top_level);
+/**
+ * Turn a network tree into html
+ * 
+ * @param	Network	The network to print
+ * @return	void
+ */
+function print_html( $network )
+{
+	echo '<div class="branch" style="display: none;">';
+	
+	echo $network->position;
+	
+	$indent = substr_count($network->position, '.') * 2;
+	for( $i=0; $i<$indent; $i++ )
+		echo '&nbsp;';
+	
+	if ( count($network->subnets) )
+		echo '<a href="#" class="open-children">+</a>';
+	
+	echo hex_to_human($network->ip) . '/' . $network->prefix . "\n";
+	
+	foreach( $network->subnets as $subnet )
+		$network_array['subnets'][] = print_html($subnet);
+	
+	echo '</div>';
+}	
