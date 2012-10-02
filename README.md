@@ -3,8 +3,8 @@ ipv6-subnet-calculator
 
 Quick demo:
 
-<?php
-include 'ip_tools.php';
+````php
+include 'calculator_tools.php';
 include 'Network.php';
 
 $human_ip = '2001:9fe:a:80::';
@@ -16,4 +16,4 @@ $top_level = new Network($ip, $prefix, $levels);
 
 header('Content-Type: text/plain');
 print_network($top_level);
-?>
+````
